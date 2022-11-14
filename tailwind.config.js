@@ -13,6 +13,14 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                tb: {
+                    DEFAULT: 'rgba(var(--color-base), <alpha-value>)',
+                    active: 'rgba(var(--color-base-active), <alpha-value>)',
+                    second: 'rgba(var(--color-base-second), <alpha-value>)',
+                    red: 'rgba(var(--color-base-red), <alpha-value>)',
+                }
+            }
         },
     },
 
