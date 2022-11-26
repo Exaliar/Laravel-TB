@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNewArticleRequest;
 use App\Http\Requests\UpdateNewArticleRequest;
 use App\Models\NewArticle;
+use Carbon\Carbon;
 
 class NewArticleController extends Controller
 {
@@ -15,7 +16,8 @@ class NewArticleController extends Controller
      */
     public function index()
     {
-        $articles = NewArticle::all();
+        $articles = NewArticle::with('user')->get();
+        Carbon::setLocale('pl');
         return view('newArticle')->with('articles', $articles);
     }
 

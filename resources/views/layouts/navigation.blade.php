@@ -1,6 +1,7 @@
 <nav x-data="{ open: false }" class="">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-full mx-auto px-4 py-1 border-b border-tb-second sm:px-6 lg:px-8 fixed top-0 left-0 right-0 bg-tb">
+    <div
+        class="max-w-full mx-auto px-4 py-1 border-b border-tb-second sm:px-6 lg:px-8 fixed z-50 top-0 left-0 right-0 bg-tb">
         <div class="flex w-11/12 mx-auto justify-between h-16">
             <div class="flex flex-row">
                 <!-- Logo -->
@@ -119,10 +120,10 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden fixed right-0 left-0 top-16 bg-tb">
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden z-50 fixed right-0 left-0 top-16 bg-tb">
         <div class="pt-2 pb-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard-Small') }}
+            <x-responsive-nav-link :href="route('newArticle')" :active="request()->routeIs('newArticle')">
+                {{ __('Nowości') }}
             </x-responsive-nav-link>
         </div>
         <div class="pb-3 space-y-1">
