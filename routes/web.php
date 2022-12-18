@@ -14,14 +14,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [NewArticleController::class, 'index'])->name('newArticle');
+Route::controller(NewArticleController::class)->prefix('articles')->name('article.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/{article}', 'show')->name('show');
+
+    Route::middleware('isAdmin')->group(function () {
+        Route::post('/', 'store')->name('store');
+        Route::get('/{article}/edit', 'edit')->name('edit');
+        Route::put('/{article}', 'update')->name('update');
+        Route::delete('/{article}', 'destroy')->name('destroy');
+    });
+});
+
+Route::get('/', function () {
+    return redirect('/articles');
+})->name('home');
+Route::get('/home', function () {
+    return redirect('/articles');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/home', function () {
-    return view('dashboard');
-})->middleware('auth')->name('home');
 
 require __DIR__ . '/auth.php';

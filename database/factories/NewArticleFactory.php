@@ -18,9 +18,9 @@ class NewArticleFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->name(),
+            'title' => $this->faker->realTextBetween(50, 70),
             'photo_path' => $this->faker->imageUrl(),
-            'description' => $this->faker->text(),
+            'description' => $this->faker->realTextBetween(160, 600),
             'user_id' => User::all()->random()->id,
             'created_at' => now()
         ];

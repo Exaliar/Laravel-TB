@@ -13,7 +13,8 @@ class NewArticle extends Model
     protected $fillable = [
         'title',
         'photo_path',
-        'description'
+        'description',
+        'user_id',
     ];
 
     public function user()

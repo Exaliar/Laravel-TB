@@ -9,10 +9,13 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+    <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Livewire Syles -->
+    @livewireStyles
 </head>
 
 <body class="font-sans antialiased">
@@ -21,8 +24,8 @@
 
         <!-- Page Heading -->
         @if (isset($header))
-            <header class="bg-tb shadow pt-16">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <header class="bg-tb pt-16 shadow">
+                <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
@@ -33,6 +36,8 @@
             {{ $slot }}
         </main>
     </div>
+    <!-- Livewire Script -->
+    @livewireScripts
 </body>
 
 </html>

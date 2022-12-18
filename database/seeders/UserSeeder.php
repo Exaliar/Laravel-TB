@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserPermitionEnum;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,7 +19,9 @@ class UserSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'name' => 'User',
+            'surname' => 'Admin',
             'email' => 'user@example.com',
+            'permition' => UserPermitionEnum::ADMIN,
         ]);
     }
 }
