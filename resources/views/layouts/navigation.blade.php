@@ -19,6 +19,12 @@
                 </div>
 
                 <div class="group relative hidden space-x-4 sm:-my-px sm:ml-4 md:flex">
+                    <x-nav-link :href="route('calculator')" :active="request()->routeIs('calculator')">
+                        {{ __('Kalkulator') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="group relative hidden space-x-4 sm:-my-px sm:ml-4 md:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
@@ -103,7 +109,12 @@
                 {{ __('Nowości') }}
             </x-responsive-nav-link>
         </div>
-        <div class="space-y-1 pb-3">
+        <div class="pb-1">
+            <x-responsive-nav-link :href="route('calculator')" :active="request()->routeIs('calculator')">
+                {{ __('Kalkulator') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pb-3">
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home-Small') }}
             </x-responsive-nav-link>

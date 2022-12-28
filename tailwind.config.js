@@ -20,6 +20,9 @@ module.exports = {
                     second: 'rgba(var(--color-base-second), <alpha-value>)',
                     red: 'rgba(var(--color-base-red), <alpha-value>)',
                 }
+            },
+            gridTemplateRows: {
+                '8': 'repeat(8, minmax(0, 1fr))',
             }
         },
     },

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\NewArticleController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,8 @@ Route::controller(NewArticleController::class)->prefix('articles')->name('articl
         Route::delete('/{article}', 'destroy')->name('destroy');
     });
 });
+
+Route::get('/calculator', CalculatorController::class)->name('calculator');
 
 Route::get('/', function () {
     return redirect('/articles');
