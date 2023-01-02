@@ -4,7 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
-use App\Enums\UserPermitionEnum;
+use App\Config\UserPermitionConfig;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -29,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        $this->defineUserAccesGate('isAdmin', UserPermitionEnum::ADMIN);
+        $this->defineUserAccesGate('isAdmin', UserPermitionConfig::ADMIN);
     }
 
     private function defineUserAccesGate(string $name, string $permition): void

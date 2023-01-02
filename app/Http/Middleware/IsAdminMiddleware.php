@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\UserPermitionEnum;
+use App\Config\UserPermitionConfig;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +21,7 @@ class IsAdminMiddleware
         if (!Auth::check()) {
             return redirect('login');
         }
-        if (Auth::user()->permition !== UserPermitionEnum::ADMIN) {
+        if (Auth::user()->permition !== UserPermitionConfig::ADMIN) {
             return redirect('dashboard')->with('message', 'You no have acces..');
         }
         return $next($request);

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Enums;
+namespace App\Config;
 
-class UserPermitionEnum
+class UserPermitionConfig
 {
     const USER = 'user';
     const USER_PREMIUM = 'user_boosted';
