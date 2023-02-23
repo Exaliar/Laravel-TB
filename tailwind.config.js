@@ -19,6 +19,7 @@ module.exports = {
                     active: "rgba(var(--color-base-active), <alpha-value>)",
                     second: "rgba(var(--color-base-second), <alpha-value>)",
                     red: "rgba(var(--color-base-red), <alpha-value>)",
+                    purple: "rgba(var(--color-base-purple), <alpha-value>)",
                 },
             },
             gridTemplateRows: {
@@ -26,9 +27,6 @@ module.exports = {
             },
             gridTemplateColumns: {
                 test: "120px 360px",
-            },
-            width: {
-                tb: "calc(100vw + 120px)",
             },
         },
     },

@@ -2,20 +2,20 @@
 
 namespace App\Http\Livewire\Calculator;
 
-use App\Config\SquadTypesConfig;
+use App\Config\MonstersSquadTypeConfig;
 use Livewire\Component;
 
 class MenuMonsterModal extends Component
 {
-    public $visibility = true;
+    public $visibility = false;
     public $monster = false;
     public $monsterId = false;
     public $squadTypes;
 
     public function mount()
     {
-        $this->monster = ['kind' => 'normal', 'lvl' => '22', 'type' => 'inferno'];
-        $this->squadTypes = SquadTypesConfig::TYPES;
+        $this->monster = ['type' => 'normal', 'lvl' => 22, 'kind' => 'inferno'];
+        $this->squadTypes = MonstersSquadTypeConfig::TYPES;
     }
 
     public function render()
@@ -36,9 +36,13 @@ class MenuMonsterModal extends Component
         $this->visibility = false;
     }
 
-    public function changeMonster($monsterId)
+    public function changeMonster($type, $i, $j, $kind)
     {
         //docelowo emitowac dane do innego komponentu odpowiedzialnego za przeliczanie wartosci
-        $this->monsterId = $monsterId;
+        $this->monster['type'] = $type;
+        $this->monster['lvl'] =  $i * 5 + 1 + $j;
+        $this->monster['kind'] =  $kind;
+        // dd($this->monster);
+        $this->visibility = false;
     }
 }

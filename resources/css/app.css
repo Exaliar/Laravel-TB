@@ -3,10 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-    :root{
-        --color-base: 31,56,64;
+    :root {
+        --color-base: 31, 56, 64;
         --color-base-active: 30, 220, 254;
-        --color-base-second: 234, 228, 204;
+        /* --color-base-second: 234, 228, 204; */
+        --color-base-second: 255, 255, 224;
         --color-base-red: 254, 0, 0;
+        --color-base-purple: 138, 43, 226;
     }
 }

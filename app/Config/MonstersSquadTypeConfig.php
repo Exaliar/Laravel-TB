@@ -2,7 +2,7 @@
 
 namespace App\Config;
 
-class SquadTypesConfig
+class MonstersSquadTypeConfig
 {
     const NORMAL = 'normal';
     const RARE = 'rare';
