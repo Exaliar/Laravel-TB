@@ -14,7 +14,7 @@ class MenuMonster extends Component
     // public $typesSelected = MonstersTypeConfig::TYPES;
     public $typesSelected = ['elf'];
     public $minLvl = "1";
-    public $maxLvl = "1";
+    public $maxLvl = "55";
 
     public function mount()
     {
@@ -41,6 +41,20 @@ class MenuMonster extends Component
             'squads' => MonstersSquadTypeConfig::TYPES,
             'types'  => MonstersTypeConfig::TYPES
         ]);
+    }
+
+    public function updatedMinLvl($val)
+    {
+        if ($val > $this->maxLvl) {
+            $this->minLvl = $this->maxLvl;
+            $this->maxLvl = $val;
+        }
+        $this->minLvl = $val;
+    }
+
+    public function updateMaxLvl($val)
+    {
+        $this->maxLvl = $val;
     }
 
     private function validateRecivedData (array $stack, array $serching)
