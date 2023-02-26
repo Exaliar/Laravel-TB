@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Config\UserPermitionConfig;
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +29,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        $this->defineUserAccesGate('isAdmin', UserPermitionConfig::ADMIN);
+    }
+
+    private function defineUserAccesGate(string $name, string $permition): void
+    {
+        Gate::define($name, function (User $user) use ($permition) {
+            return $user->permition === $permition;
+        });
     }
 }
