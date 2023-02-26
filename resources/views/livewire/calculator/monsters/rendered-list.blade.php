@@ -1,5 +1,4 @@
 <div>
-    {{-- The best athlete wants his opponent at his best. --}}
     <div class="relative mx-0 flex h-96 w-full flex-col overflow-x-auto overflow-y-scroll">
         <table class="inline-blocktext-left text-left text-sm text-tb-second dark:border-gray-700/20 dark:text-gray-400">
             <thead
@@ -23,19 +22,23 @@
                 @forelse ($renderedSquad as $filteredMonster)
                     <tr class="odd:bg-tb-second/10 dark:bg-gray-800">
                         <td class="px-1 py-2 first-letter:uppercase" scope="row">
-                            {{ $filteredMonster->squad_type }}
+                            {{ $filteredMonster['squad_type'] }}
                         </td>
                         <td class="py-2 pr-1 first-letter:uppercase">
-                            {{ $filteredMonster->type }}
+                            {{ $filteredMonster['type'] }}
                         </td>
                         <td class="py-2 pr-1">
-                            {{ $filteredMonster->lvl }}
+                            {{ $filteredMonster['lvl'] }}
                         </td>
                         <td class="py-2 pr-1">
-                            <input name="{{ $filteredMonster->id }}" type="hidden">
-
-                            <a class="rounded-sm bg-tb-second/80 py-1 pr-1 text-xs text-tb transition-all hover:bg-tb hover:text-tb-active dark:text-blue-500"
-                                href="#">Wybierz</a>
+                            @if ($selected !== $filteredMonster['id'])
+                                <button
+                                    class="rounded-lg bg-blue-500 px-4 py-2 text-blue-100 duration-300 hover:bg-blue-600"
+                                    wire:click="selectFightingSquad('{{ $filteredMonster['id'] }}')">Wybierz</button>
+                            @else
+                                <button
+                                    class="rounded-lg bg-green-700 px-4 py-2 text-green-100 duration-300 hover:bg-green-800">Wybrany</button>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -45,25 +48,7 @@
                         </td>
                     </tr>
                 @endforelse
-
             </tbody>
         </table>
     </div>
-
-    {{-- <tr class="odd:bg-tb-second/10 dark:bg-gray-800">
-        <th class="whitespace-nowrap px-1 py-2 font-medium text-tb-second dark:text-white" scope="row">
-            Zwykły
-        </th>
-        <td class="py-2 pr-1">
-            Nieumarły
-        </td>
-        <td class="py-2 pr-1">
-            12
-        </td>
-        <td class="py-2 pr-1">
-            <a class="rounded-sm bg-green-600 py-1 pr-1 text-xs text-tb transition-all hover:bg-tb hover:text-tb-active dark:text-blue-500"
-                href="#">Wybrany</a>
-        </td>
-    </tr> --}}
-
 </div>

@@ -2,41 +2,78 @@
 
 namespace App\Http\Livewire\Calculator\Monsters;
 
+use App\Config\MonstersSquadTypeConfig;
+use App\Config\MonstersTypeConfig;
 use App\Models\MonsterSquad;
 use Livewire\Component;
 
 class RenderedList extends Component
 {
+
+    public $minLvl = '1';
+    public $maxLvl = '55';
+    // public $squadsSelected = [];
+    // public $typesSelected = [];
+    public $squadsSelected = [MonstersSquadTypeConfig::NORMAL];
+    public $typesSelected = [MonstersTypeConfig::UNDEAD];
+    public $renderedSquad = [];
+    public $selected = null;
+
+    protected $rules = [
+        'selected' => 'nullable|uuid'
+    ];
+
+    protected $listeners = [
+        'minMaxLvl',
+        'squadsSelected',
+        'typesSelected',
+        'filterSquadMonster',
+    ];
+
+    public function mount()
+    {
+        $this->filterSquadMonster();
+    }
+
     public function render()
     {
         return view('livewire.calculator.monsters.rendered-list');
     }
-    public $renderedSquad = [];
 
-    protected $listeners = ['filterSquadMonster'];
-
-    public function mount()
+    public function minMaxLvl($minLvl, $maxLvl)
     {
-        $this->renderedSquad = MonsterSquad::without([
-            'firstMonster',
-            'secondMonster',
-            'thirdMonster',
-            'fourthMonster',
-            'fifthMonster',
-            'sixthMonster',
-        ])->whereBetween('lvl', [1, 1])->whereIn('squad_type',['normal'])->whereIn('type', ['elf'])->orderBy('lvl')->get();
+        $this->minLvl = $minLvl;
+        $this->maxLvl = $maxLvl;
+        $this->filterSquadMonster();
     }
 
-    public function filterSquadMonster(array $squad = ['normal'], array $type = ['elf'],$min = 1,$max = 1)
+    public function squadsSelected($value)
     {
-        $this->renderedSquad = MonsterSquad::without([
-            'firstMonster',
-            'secondMonster',
-            'thirdMonster',
-            'fourthMonster',
-            'fifthMonster',
-            'sixthMonster',
-        ])->whereBetween('lvl', [$min, $max])->whereIn('squad_type', $squad)->whereIn('type', $type)->orderBy('lvl')->get();
-        // dd($this->renderedSquad);
+        $this->squadsSelected = $value;
+        $this->filterSquadMonster();
+    }
+
+    public function typesSelected($value)
+    {
+        $this->typesSelected = $value;
+        $this->filterSquadMonster();
+    }
+
+    public function selectFightingSquad($selected)
+    {
+        $this->selected = $selected;
+        $this->validate();
+        //event odpalajacy pozyskanie modelu wybranej jednostki
+    }
+
+    private function filterSquadMonster()
+    {
+        $this->renderedSquad = MonsterSquad::select('lvl', 'squad_type', 'type', 'id')
+        ->whereBetween('lvl', [$this->minLvl, $this->maxLvl])
+        ->whereIn('squad_type', $this->squadsSelected)
+        ->whereIn('type', $this->typesSelected)
+        ->orderBy('lvl')
+        ->get()
+        ->toArray();
     }
 }

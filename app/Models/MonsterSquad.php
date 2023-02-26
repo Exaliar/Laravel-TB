@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MonsterSquad extends Model
 {
-    use HasFactory, SoftDeletes, HasUuids;
+    use HasFactory, HasUuids;
 
     protected $filable = [
         'squad_type',
@@ -29,15 +29,15 @@ class MonsterSquad extends Model
         'sixth_monster_count',
     ];
 
-    protected $with = [
-        'firstMonster',
-        'secondMonster',
-        'thirdMonster',
-        'fourthMonster',
-        'fifthMonster',
-        'sixthMonster',
-        'seventhMonster' // test this monster not exist
-    ];
+    // protected $with = [
+    //     'firstMonster',
+    //     'secondMonster',
+    //     'thirdMonster',
+    //     'fourthMonster',
+    //     'fifthMonster',
+    //     'sixthMonster',
+    //     'seventhMonster' // test this monster not exist
+    // ];
 
     public function firstMonster()
     {
