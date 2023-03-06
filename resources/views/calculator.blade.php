@@ -13,6 +13,10 @@
 
         <x-calculator.section-title>wybrany przeciwnik</x-calculator.section-title>
 
-        {{-- <x-calculator.monster-selected-section /> --}}
+        <x-calculator.monster-selected-section />
+
+        <x-calculator.section-title>armia</x-calculator.section-title>
+
+
     </div>
 </x-app-layout>

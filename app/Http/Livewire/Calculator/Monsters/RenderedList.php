@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Calculator\Monsters;
 
-use App\Config\MonstersSquadTypeConfig;
-use App\Config\MonstersTypeConfig;
+// use App\Config\MonstersSquadTypeConfig;
+// use App\Config\MonstersTypeConfig;
 use App\Models\MonsterSquad;
 use Livewire\Component;
 
@@ -12,10 +12,8 @@ class RenderedList extends Component
 
     public $minLvl = '1';
     public $maxLvl = '55';
-    // public $squadsSelected = [];
-    // public $typesSelected = [];
-    public $squadsSelected = [MonstersSquadTypeConfig::NORMAL];
-    public $typesSelected = [MonstersTypeConfig::UNDEAD];
+    public $squadsSelected = [];
+    public $typesSelected = [];
     public $renderedSquad = [];
     public $selected = null;
 
@@ -32,7 +30,10 @@ class RenderedList extends Component
 
     public function mount()
     {
-        $this->filterSquadMonster();
+        $this->renderedSquad = MonsterSquad::select('lvl', 'squad_type', 'type', 'id')
+        ->orderBy('lvl')
+        ->get()
+        ->toArray();
     }
 
     public function render()
@@ -59,11 +60,10 @@ class RenderedList extends Component
         $this->filterSquadMonster();
     }
 
-    public function selectFightingSquad($selected)
+    public function updatedSelected($selected)
     {
-        $this->selected = $selected;
         $this->validate();
-        //event odpalajacy pozyskanie modelu wybranej jednostki
+        $this->emit('setMonsterSquad', $selected);
     }
 
     private function filterSquadMonster()

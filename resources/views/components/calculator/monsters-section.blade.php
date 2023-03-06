@@ -1,6 +1,4 @@
 <div>
-    <!-- Very little is needed to make a happy life. - Marcus Aurelius -->
-
     <div class="my-2 flex">
         <div class="flex flex-shrink-0 flex-col items-start border-r px-1">
             <x-calculator.title-group-check-box-input title="Lvl's">

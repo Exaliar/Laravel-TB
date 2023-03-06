@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MonsterSquad extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, SoftDeletes, HasUuids;
 
     protected $filable = [
         'squad_type',
         'lvl',
         'type',
+        'multiple',
         'first_monster',
         'first_monster_count',
         'second_monster',

@@ -1,5 +1,9 @@
 <div>
     <div class="relative mx-0 flex h-96 w-full flex-col overflow-x-auto overflow-y-scroll">
+        {{-- Wybrany UUID: {{ var_export($selected) }}
+        <br>
+        WybranyWyslany UUID: {{ var_export($sendSelected) }} --}}
+
         <table class="inline-blocktext-left text-left text-sm text-tb-second dark:border-gray-700/20 dark:text-gray-400">
             <thead
                 class="sticky top-0 right-0 left-0 bg-tb text-xs uppercase text-tb-second dark:bg-gray-700 dark:text-gray-400">
@@ -32,12 +36,25 @@
                         </td>
                         <td class="py-2 pr-1">
                             @if ($selected !== $filteredMonster['id'])
-                                <button
+                                <div>
+                                    <input class="hidden" id="{{ $filteredMonster['id'] }}" type="radio"
+                                        value="{{ $filteredMonster['id'] }}" wire:model="selected">
+                                    <label
+                                        class="cursor-pointer rounded-sm bg-blue-500 px-4 py-1 text-blue-100 duration-300 hover:bg-blue-600"
+                                        for="{{ $filteredMonster['id'] }}">Wybierz</label>
+                                </div>
+                                {{-- <button
                                     class="rounded-lg bg-blue-500 px-4 py-2 text-blue-100 duration-300 hover:bg-blue-600"
-                                    wire:click="selectFightingSquad('{{ $filteredMonster['id'] }}')">Wybierz</button>
+                                    wire:click="selectFightingSquad('{{ $filteredMonster['id'] }}')">Wybierz</button> --}}
                             @else
-                                <button
-                                    class="rounded-lg bg-green-700 px-4 py-2 text-green-100 duration-300 hover:bg-green-800">Wybrany</button>
+                                <div>
+                                    <input class="hidden" id="{{ $filteredMonster['id'] }}" type="radio"
+                                        value="{{ $filteredMonster['id'] }}" wire:model="selected">
+                                    <label class="rounded-sm bg-green-700 px-4 py-1 text-green-100 duration-300"
+                                        for="{{ $filteredMonster['id'] }}">Wybrany</label>
+                                </div>
+                                {{-- <button
+                                    class="rounded-lg bg-green-700 px-4 py-2 text-green-100 duration-300 hover:bg-green-800">Wybrany</button> --}}
                             @endif
                         </td>
                     </tr>

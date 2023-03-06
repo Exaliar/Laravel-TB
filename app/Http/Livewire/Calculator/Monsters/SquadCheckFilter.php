@@ -18,7 +18,7 @@ class SquadCheckFilter extends Component
 
     public function updatedSquadsSelected()
     {
-        $this->validateRecivedData(MonstersSquadTypeConfig::TYPES, $this->squadsSelected);
+        // $this->validateRecivedData(MonstersSquadTypeConfig::TYPES, $this->squadsSelected);
         $this->emit('squadsSelected', $this->squadsSelected);
     }
 
