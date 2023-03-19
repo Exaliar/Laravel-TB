@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(NewArticleSeeder::class);
         $this->call(MonsterSeeder::class);
         $this->call(MonsterSquadSeeder::class);
+        $this->call(ArmySeeder::class);
     }
 }

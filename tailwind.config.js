@@ -21,6 +21,15 @@ module.exports = {
                     red: "rgba(var(--color-base-red), <alpha-value>)",
                     purple: "rgba(var(--color-base-purple), <alpha-value>)",
                 },
+                lvl: {
+                    1: "rgba(var(--color-lvl-first), <alpha-value>)",
+                    2: "rgba(var(--color-lvl-second), <alpha-value>)",
+                    3: "rgba(var(--color-lvl-thirth), <alpha-value>)",
+                    4: "rgba(var(--color-lvl-fourth), <alpha-value>)",
+                    5: "rgba(var(--color-lvl-fifth), <alpha-value>)",
+                    6: "rgba(var(--color-lvl-sixth), <alpha-value>)",
+                    7: "rgba(var(--color-lvl-seventh), <alpha-value>)",
+                },
             },
             gridTemplateRows: {
                 8: "repeat(8, minmax(0, 1fr))",

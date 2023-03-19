@@ -17,6 +17,10 @@
 
         <x-calculator.section-title>armia</x-calculator.section-title>
 
+        <x-calculator.army-section />
 
+        <x-calculator.section-title>wybrane jednostki</x-calculator.section-title>
+
+        <x-calculator.army-selected-section />
     </div>
 </x-app-layout>

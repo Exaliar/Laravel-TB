@@ -48,22 +48,22 @@ class RenderedMonsterShort extends Component
                 ->firstOrFail();
                 //posiadam id wybranego squadu
         if ($this->monsters->firstMonster->exists()) {
-            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->first_monster_count, $this->monsters->firstMonster, $this->monsters->first_multiple);
+            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->firstMonster, $this->monsters->first_monster_count, $this->monsters->first_multiple);
         }
         if ($this->monsters->secondMonster->exists()) {
-            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->second_monster_count, $this->monsters->secondMonster, $this->monsters->second_multiple);
+            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->secondMonster, $this->monsters->second_monster_count, $this->monsters->second_multiple);
         }
         if ($this->monsters->thirdMonster->exists()) {
-            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->third_monster_count, $this->monsters->thirdMonster, $this->monsters->third_multiple);
+            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->thirdMonster, $this->monsters->third_monster_count, $this->monsters->third_multiple);
         }
         if ($this->monsters->fourthMonster->exists()) {
-            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->fourth_monster_count, $this->monsters->fourthMonster, $this->monsters->fourth_multiple);
+            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->fourthMonster, $this->monsters->fourth_monster_count, $this->monsters->fourth_multiple);
         }
         if ($this->monsters->fifthMonster->exists()) {
-            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->fifth_monster_count, $this->monsters->fifthMonster, $this->monsters->fifth_multiple);
+            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->fifthMonster, $this->monsters->fifth_monster_count, $this->monsters->fifth_multiple);
         }
         if ($this->monsters->sixthMonster->exists()) {
-            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->sixth_monster_count, $this->monsters->sixthMonster, $this->monsters->sixth_multiple);
+            $this->monsterSquadDetal[] = $this->prepreData($this->monsters->sixthMonster, $this->monsters->sixth_monster_count, $this->monsters->sixth_multiple);
         }
         //w wybranym squadzie mam dostep to id potwora i ilosci jednostek
 
@@ -123,9 +123,9 @@ class RenderedMonsterShort extends Component
 //    ]
 
 
-    private function prepreData($ilosc, $relacja, $multiple = 1, $bonusAP = 0, $bonusHP = 0)
+    private function prepreData($relacja, $ilosc = 1, $multiple = 1, $bonusAP = 0, $bonusHP = 0)
     {
-        return [
+        return collect([
             'nazwa' => $relacja->name,
             'lvl' => $relacja->lvl,
             'typ' => [
@@ -139,29 +139,27 @@ class RenderedMonsterShort extends Component
                 [
                     'nazwa' => 'Podstawa',
                     'bonus' => null,
-                    'total_atak' => $ilosc * $relacja->strength
+                    'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $bonusAP))
                 ],
                 [
-                    //przeksztalcic wzor na bonus ap z armii gracza
-                    // ilość jednostek * ((siła / 100) * (100 + bonus))
+                    // ilość jednostek * ((siła / 100) * (100 + bonus + bonusGracza))
                     'nazwa' => $relacja->first_bonus_who,
                     'bonus' => $relacja->first_bonus,
-                    'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $relacja->first_bonus))
+                    'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $relacja->first_bonus + $bonusAP))
                 ],
                 [
                     'nazwa' => $relacja->second_bonus_who,
                     'bonus' => $relacja->second_bonus,
-                    'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $relacja->second_bonus))
+                    'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $relacja->second_bonus + $bonusAP))
                 ],
                 [
                     'nazwa' => $relacja->third_bonus_who,
                     'bonus' => $relacja->third_bonus,
-                    'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $relacja->third_bonus))
+                    'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $relacja->third_bonus + $bonusAP))
                 ]
                 ],
-                //przeksztalcic wzor na bonus hp z armii gracza
-            'zycie' => $ilosc * $relacja->health
-        ];
+            'zycie' => $ilosc * (($relacja->health / 100) * (100 + $bonusHP))
+        ]);
 
     }
 

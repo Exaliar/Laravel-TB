@@ -18,7 +18,7 @@ class TypeCheckFilter extends Component
 
     public function updatedTypesSelected()
     {
-        // $this->validateRecivedData(MonstersTypeConfig::TYPES, $this->typesSelected);
+        $this->validateRecivedData(MonstersTypeConfig::TYPES, $this->typesSelected);
         $this->emit('typesSelected', $this->typesSelected);
     }
 

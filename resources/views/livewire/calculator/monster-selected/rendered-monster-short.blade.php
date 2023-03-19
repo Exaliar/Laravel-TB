@@ -31,9 +31,9 @@
                 <span class="block w-1/2 text-sm">
                     Typ:
                 </span>
-                <span class="text-md block flex w-1/2">
+                <span class="text-md flex w-1/2">
                     @foreach ($monsterDetal['typ'] as $typ)
-                        <p class="pr-4">{{ $typ }}</p>
+                        <p class="pr-2">{{ !$loop->last ? $typ . ', ' : $typ }}</p>
                     @endforeach
                 </span>
             </div>
@@ -44,16 +44,16 @@
                 </span>
                 <span class="text-md block w-1/2">
                     ({{ $monsterDetal['mnoznik'] }}x)
-                    {{ $monsterDetal['ilosc'] }}
+                    {{ number_format($monsterDetal['ilosc'], 0, '.', ' ') }}
                 </span>
             </div>
             @foreach ($monsterDetal['atak'] as $atak)
                 <div class="flex pl-2 odd:bg-tb-second/10">
                     <span class="block w-1/2 text-sm">
-                        Atak {{ $atak['bonus'] . '%' }} {{ $atak['nazwa'] }}:
+                        Atak {{ $loop->first ? '' : $atak['bonus'] . '%' }} {{ $atak['nazwa'] }}:
                     </span>
                     <span class="text-md block w-1/2">
-                        {{ $atak['total_atak'] }}
+                        {{ number_format($atak['total_atak'], 2, '.', ' ') }}
                     </span>
                 </div>
             @endforeach
@@ -64,7 +64,7 @@
                     Życie:
                 </span>
                 <span class="text-md block w-1/2">
-                    {{ $monsterDetal['zycie'] }}
+                    {{ number_format($monsterDetal['zycie'], 2, '.', ' ') }}
                 </span>
             </div>
         @empty
