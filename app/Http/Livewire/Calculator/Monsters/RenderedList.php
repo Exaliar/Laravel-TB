@@ -34,6 +34,10 @@ class RenderedList extends Component
         ->orderBy('lvl')
         ->get()
         ->toArray();
+
+        if (session()->has('monsterSelectedID')) {
+            $this->selected = session('monsterSelectedID');
+        }
     }
 
     public function render()
@@ -64,6 +68,7 @@ class RenderedList extends Component
     {
         $this->validate();
         $this->emit('setMonsterSquad', $selected);
+        session(['monsterSelectedID' => $selected]);
     }
 
     private function filterSquadMonster()

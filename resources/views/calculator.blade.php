@@ -22,5 +22,9 @@
         <x-calculator.section-title>wybrane jednostki</x-calculator.section-title>
 
         <x-calculator.army-selected-section />
+
+        <x-calculator.section-title>Panel urzytkownika</x-calculator.section-title>
+
+        <x-calculator.user-section />
     </div>
 </x-app-layout>

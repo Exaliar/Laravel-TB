@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Calculator\ArmySelected;
 
 use App\Models\Army;
+use Illuminate\Support\Arr;
 use Livewire\Component;
 
 class RenderedArmy extends Component
@@ -10,12 +11,24 @@ class RenderedArmy extends Component
     // public $armySelected = [];
     public $armySelected;
 
-    protected $listeners = ['addArmyUnit'];
+    protected $listeners = [
+        'addArmyUnit',
+        'massIncreaseBonusAP',
+        'massDecreaseBonusAP',
+        'massIncreaseBonusHP',
+        'massDecreaseBonusHP',
+        'saveUnit'
+    ];
 
     public function mount()
     {
-        $this->armySelected = collect();
-        $this->addArmyUnit(Army::first());
+        if (session()->exists('armySelected')) {
+            $this->armySelected = session('armySelected');
+        //    dump(session('armySelected'));
+        } else {
+            $this->armySelected = collect();
+        }
+        // $this->addArmyUnit(Army::first());
     }
 
     public function render()
@@ -25,7 +38,6 @@ class RenderedArmy extends Component
 
     public function addArmyUnit(Army $id)
     {
-
         $this->armySelected->push([
             'ilosc' => 1,
             'id' => $id->id,
@@ -39,8 +51,103 @@ class RenderedArmy extends Component
         // dump($this->armySelected);
     }
 
-    private function prepreData($relacja, $ilosc = 1, $multiple = 1, $bonusAP = 0, $bonusHP = 0)
+    public function massIncreaseBonusAP(float $bonus)
     {
+        if ($this->armySelected->isEmpty()) {
+            return;
+        }
+        foreach ($this->armySelected as $key => $value) {
+            $value['bonusAP'] += $bonus;
+            $army = Army::findOrFail($value['id']);
+            $value['render'] =  $this->prepreData($army, $value['ilosc'], 1, $value['bonusAP'], $value['bonusHP'])->toArray();
+            $this->armySelected[$key] = $value;
+        }
+    }
+
+    public function massDecreaseBonusAP(float $bonus)
+    {
+        if ($this->armySelected->isEmpty()) {
+            return;
+        }
+
+        foreach ($this->armySelected as $key => $value) {
+            $value['bonusAP'] -= $bonus;
+            if ($value['bonusAP'] < 0) {
+                $value['bonusAP'] = 0;
+            }
+            $army = Army::findOrFail($value['id']);
+            $value['render'] =  $this->prepreData($army, $value['ilosc'], 1, $value['bonusAP'], $value['bonusHP'])->toArray();
+            $this->armySelected[$key] = $value;
+        }
+    }
+
+    public function massIncreaseBonusHP(float $bonus)
+    {
+        if ($this->armySelected->isEmpty()) {
+            return;
+        }
+
+        foreach ($this->armySelected as $key => $value) {
+            $value['bonusHP'] += $bonus;
+            $army = Army::findOrFail($value['id']);
+            $value['render'] =  $this->prepreData($army, $value['ilosc'], 1, $value['bonusAP'], $value['bonusHP'])->toArray();
+            $this->armySelected[$key] = $value;
+        }
+    }
+
+    public function massDecreaseBonusHP(float $bonus)
+    {
+        if ($this->armySelected->isEmpty()) {
+            return;
+        }
+
+        foreach ($this->armySelected as $key => $value) {
+            $value['bonusHP'] -= $bonus;
+            if ($value['bonusHP'] < 0) {
+                $value['bonusHP'] = 0;
+            }
+            // dump($value);
+            $army = Army::findOrFail($value['id']);
+            $value['render'] =  $this->prepreData($army, $value['ilosc'], 1, $value['bonusAP'], $value['bonusHP'])->toArray();
+            $this->armySelected[$key] = $value;
+        }
+    }
+    public function saveUnit()
+    {
+        if ($this->armySelected->isEmpty()) {
+            return;
+        }
+        session(['armySelected' => $this->armySelected]);
+    }
+
+    public function removeArmyUnit(int $id)
+    {
+        $this->armySelected->forget($id);
+        $this->armySelected = $this->armySelected->values();
+    }
+
+    public function updatedArmySelected($value, $id)
+    {
+        $keys = explode('.', $id);
+        // dd($keys);
+        $data = $this->armySelected->toArray();
+        $army = Army::findOrFail($data[$keys[0]]['id']);
+        $data[$keys[0]][$keys[1]] = $value;
+        $data[$keys[0]]['render'] =  $this->prepreData($army, $this->armySelected[$keys[0]]['ilosc'], 1, $this->armySelected[$keys[0]]['bonusAP'], $this->armySelected[$keys[0]]['bonusHP'])->toArray();
+        $this->armySelected = collect($data);
+
+        // $this->armySelected[$keys[0]][$keys[1]] = $value;
+        // foreach ($this->armySelected as $key => $eachArmy) {
+        //     dd($eachArmy);
+        //     $army = Army::findOrFail($eachArmy['id']);
+        //     Arr::set($this->armySelected, $id, $value);
+        //     $eachArmy['render'] = $this->prepreData($army, $eachArmy['ilosc'], 1, $eachArmy['bonusAP'], $eachArmy['bonusHP'])->toArray();
+        // }
+    }
+
+    private function prepreData($relacja, int $ilosc = 1,int $multiple = 1,float $bonusAP = 0,float $bonusHP = 0)
+    {
+        // dd($relacja);
         return collect([
             'nazwa' => $relacja->name,
             'lvl' => $relacja->lvl,
