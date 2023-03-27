@@ -20,7 +20,7 @@ class RenderedMonster extends Component
     {
         $this->monsterSelected['render'] = [];
 
-        if (session()->has('monsterSelectedID')) {
+        if (session()->exists('monsterSelectedID')) {
             $this->setMonsterSquad(session('monsterSelectedID'));
         }
     }
@@ -49,6 +49,8 @@ class RenderedMonster extends Component
             'type' => $this->monsters->type,
         ];
         $this->getSquadDetal();
+        session()->forget('MonsterSelected');
+        session(['monsterSelected' => $this->monsterSelected]);
     }
 
     public function getSquadDetal()
