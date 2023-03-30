@@ -7,7 +7,6 @@ use Livewire\Component;
 
 class RenderedArmy extends Component
 {
-    // public $armySelected = [];
     public $armySelected;
 
     protected $listeners = [
@@ -19,21 +18,13 @@ class RenderedArmy extends Component
         'saveUnit'
     ];
 
-    protected $rules = [
-        'armySelected.*.ilosc' => ['numeric', 'min:0'],
-        'armySelected.*.bonusAP' => ['numeric', 'min:0', 'regex:/^\d+(\.\d{1})?$/'],
-        'armySelected.*.bonusHP' => ['numeric', 'min:0', 'regex:/^\d+(\.\d{1})?$/'],
-    ];
-
     public function mount()
     {
         if (session()->exists('armySelected')) {
             $this->armySelected = session('armySelected');
-        //    dump(session('armySelected'));
         } else {
             $this->armySelected = collect();
         }
-        // $this->addArmyUnit(Army::first());
     }
 
     public function render()
@@ -51,10 +42,6 @@ class RenderedArmy extends Component
             'render' => $this->prepreData($id)->toArray()
         ]);
         session(['armySelected' => $this->armySelected]);
-        // $this->armySelected->dump();
-        // array_push($this->armySelected, $id);
-        // $test = $this->prepreData($id);
-        // dump($this->armySelected);
     }
 
     public function massIncreaseBonusAP(float $bonus)
@@ -119,7 +106,7 @@ class RenderedArmy extends Component
         }
         session(['armySelected' => $this->armySelected]);
     }
-    public function saveUnit()
+    public function saveUnit()  //metoda wymaga dopracowania z modelem bazy danych
     {
         if ($this->armySelected->isEmpty()) {
             return;
@@ -136,45 +123,29 @@ class RenderedArmy extends Component
     public function updatedArmySelected($value, $id)
     {
 
-        // $this->validate();
-        // dd($this->armySelected);
-        // dd(round(abs(floatval($value)), 1), $id);
         $keys = explode('.', $id);
-        // dd($keys);
-        // $this->armySelected = collect($this->armySelected);
-        // $this->armySelected->toArray();
-        $this->armySelected->each(function ($item, $key) use ($keys, $value)
-        {
-            if ($key !== $keys[0]) {
-                return false;
-            } else {
-                if ($keys[1] === 'ilosc') {
-                    $item[$keys[1]] = abs(intval($value));
-                } else {
-                    $item[$keys[1]] = round(abs(floatval($value)), 1);
-                }
-                $army = Army::findOrFail($item['id']);
-                $item['render'] =  $this->prepreData($army, $item['ilosc'], 1, $item['bonusAP'], $item['bonusHP'])->toArray();
-                dump('test');
-            }
-        });
-        //if
+
+        $data = $this->armySelected->toArray();
+
+        if ($keys[1] === 'ilosc') {
+            $data[$keys[0]][$keys[1]] = abs(intval($value));
+        } else {
+            $data[$keys[0]][$keys[1]] = round(abs(floatval($value)), 1);
+        }
+
         // dd($data);
-        // $this->armySelected = collect($this->armySelected);
+        $army = Army::findOrFail($data[$keys[0]]['id']);
+        $data[$keys[0]]['render'] = $this->prepreData($army, $data[$keys[0]]['ilosc'], 1, $data[$keys[0]]['bonusAP'], $data[$keys[0]]['bonusHP'])->toArray();
+
+        $this->armySelected = collect($data);
+
+
         session(['armySelected' => $this->armySelected]);
 
-        // $this->armySelected[$keys[0]][$keys[1]] = $value;
-        // foreach ($this->armySelected as $key => $eachArmy) {
-        //     dd($eachArmy);
-        //     $army = Army::findOrFail($eachArmy['id']);
-        //     Arr::set($this->armySelected, $id, $value);
-        //     $eachArmy['render'] = $this->prepreData($army, $eachArmy['ilosc'], 1, $eachArmy['bonusAP'], $eachArmy['bonusHP'])->toArray();
-        // }
     }
 
     private function prepreData($relacja, int $ilosc = 1,int $multiple = 1,float $bonusAP = 0,float $bonusHP = 0)
     {
-        // dd($relacja);
         return collect([
             'nazwa' => $relacja->name,
             'lvl' => $relacja->lvl,

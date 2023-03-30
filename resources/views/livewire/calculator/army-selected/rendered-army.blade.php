@@ -9,7 +9,8 @@
     <br> --}}
 
     @forelse ($armySelected as $key => $army)
-        <section class="w-full items-center border-b border-tb-second pt-2 text-sm text-tb-second last:border-0">
+        <section class="w-full items-center border-b border-tb-second pt-2 text-sm text-tb-second last:border-0"
+            wire:key="army-selected-{{ $key }}">
 
             <div class="flex flex-row items-center pb-2 pr-4">
                 <span class="w-1/3 px-4">#{{ $key + 1 }}</span>
@@ -20,28 +21,28 @@
                 </div>
             </div>
 
-            <div class="flex flex-row items-center pb-2 pr-4" wire:key="army-selected-ilosc-{{ $key }}">
+            <div class="flex flex-row items-center pb-2 pr-4">
                 <label class="w-1/3 px-4" for="ilosc{{ $key }}">Ilość</label>
                 <input
                     class="block rounded border border-gray-200 bg-gray-100 py-1 px-3 text-gray-700 focus:border-blue-500 focus:ring-blue-500"
                     id="ilosc{{ $key }}" type="text" placeholder="Ilość jenostek"
-                    wire:model="armySelected.{{ $key }}.ilosc">
+                    wire:model.debounce.1s="armySelected.{{ $key }}.ilosc">
             </div>
 
-            <div class="flex flex-row items-center pb-2 pr-4" wire:key="army-selected-atak-{{ $key }}">
+            <div class="flex flex-row items-center pb-2 pr-4">
                 <label class="w-1/3 px-4" for="bonusAP{{ $key }}">Bonus Ataku</label>
                 <input
                     class="block rounded border border-gray-200 bg-gray-100 py-1 px-3 text-gray-700 focus:border-blue-500 focus:ring-blue-500"
                     id="bonusAP{{ $key }}" type="text" placeholder="Bonus ataku w %"
-                    wire:model="armySelected.{{ $key }}.bonusAP">
+                    wire:model.debounce.1s="armySelected.{{ $key }}.bonusAP">
             </div>
 
-            <div class="flex flex-row items-center pb-2 pr-4" wire:key="army-selected-zycie-{{ $key }}">
+            <div class="flex flex-row items-center pb-2 pr-4">
                 <label class="w-1/3 px-4" for="bonusHP{{ $key }}">Bonus Życia</label>
                 <input
                     class="block rounded border border-gray-200 bg-gray-100 py-1 px-3 text-gray-700 focus:border-blue-500 focus:ring-blue-500"
                     id="bonusHP{{ $key }}" type="text" placeholder="Bonus życia w %"
-                    wire:model="armySelected.{{ $key }}.bonusHP">
+                    wire:model.debounce.1s="armySelected.{{ $key }}.bonusHP">
             </div>
 
             <div class="flex flex-row flex-wrap items-center pb-2 pr-4">
