@@ -79,7 +79,7 @@ class RenderedMonster extends Component
 
     private function prepreData($relacja, $ilosc = 1, $multiple = 1, $bonusAP = 0, $bonusHP = 0)
     {
-        return collect([
+        return [
             'nazwa' => $relacja->name,
             'lvl' => $relacja->lvl,
             'typ' => [
@@ -89,6 +89,7 @@ class RenderedMonster extends Component
             ],
             'mnoznik' => $multiple,
             'ilosc' => $ilosc,
+            'atak_each' => $relacja->strength,
             'atak' => [
                 [
                     'nazwa' => 'Podstawa',
@@ -112,8 +113,9 @@ class RenderedMonster extends Component
                     'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $relacja->third_bonus + $bonusAP))
                 ]
                 ],
-            'zycie' => $ilosc * (($relacja->health / 100) * (100 + $bonusHP))
-        ]);
+            'zycie' => $ilosc * (($relacja->health / 100) * (100 + $bonusHP)),
+            'action' => true
+        ];
 
     }
 

@@ -124,8 +124,8 @@ class RenderedArmy extends Component
     {
 
         $keys = explode('.', $id);
-
         $data = $this->armySelected->toArray();
+        $army = Army::findOrFail($data[$keys[0]]['id']);
 
         if ($keys[1] === 'ilosc') {
             $data[$keys[0]][$keys[1]] = abs(intval($value));
@@ -133,13 +133,9 @@ class RenderedArmy extends Component
             $data[$keys[0]][$keys[1]] = round(abs(floatval($value)), 1);
         }
 
-        // dd($data);
-        $army = Army::findOrFail($data[$keys[0]]['id']);
         $data[$keys[0]]['render'] = $this->prepreData($army, $data[$keys[0]]['ilosc'], 1, $data[$keys[0]]['bonusAP'], $data[$keys[0]]['bonusHP'])->toArray();
 
         $this->armySelected = collect($data);
-
-
         session(['armySelected' => $this->armySelected]);
 
     }
@@ -179,7 +175,8 @@ class RenderedArmy extends Component
                     'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $relacja->third_bonus + $bonusAP))
                 ]
             ],
-            'zycie' => $ilosc * (($relacja->health / 100) * (100 + $bonusHP))
+            'zycie' => $ilosc * (($relacja->health / 100) * (100 + $bonusHP)),
+            'action' => true
         ]);
     }
 }
