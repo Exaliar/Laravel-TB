@@ -22,16 +22,28 @@ class CalculatorService
 
         $this->sortByAtakArmies();
         $this->sortByAtakMonsters();
+
         while ($this->countArmiesHP() > 0 && $this->countMonstersHP() > 0) {
+            $prepareRaportData = [
+                'army' => [],
+                'monster' => []
+            ];
 
-            // dump($this->armies);
-            // dump($this->countArmiesHP());
-
-            // dump($this->monsters);
-            // dump($this->countMonstersHP());
-            // dd('while');
             if ($this->firstAtak) {
-                $this->armiesAttack();
+                // dump($this->armies);
+                if (!$this->armies->contains('render.action', true)) {
+                    $this->firstAtak = false;
+                    continue;
+                }
+                $atakingUnit = $this->getAtakingUnitFromArmies();
+                $atakingUnit = $this->getAtakingUnitFromArmies();
+                $atakingUnit = $this->getAtakingUnitFromArmies();
+                $atakingUnit = $this->getAtakingUnitFromArmies();
+                $atakingUnit = $this->getAtakingUnitFromArmies();
+                dd($atakingUnit);
+                // $prepareRaportData['army'] = $this->grabArmyData($atakingUnit);
+                // $this->armiesAttack($atakingUnit);
+
                 //atakuje armia
                 //znalezienie jednostki z najwiekszym atakiem podstawowym
                 // po posortowaniu powinna byc pierwsza ale trzeba rowniez sprawdzic czy juz odbyla atak
@@ -51,6 +63,8 @@ class CalculatorService
                 //atakuje monster
                 $this->firstAtak = true;
             }
+            $this->raport[] = $prepareRaportData;
+            dd($this->raport);
         }
         //zalozenie w sesji powinny znajdowac sie 3 zmienne
         //session armia = zawierajaca wszystkie wprowadzone przez urzytkownika jednostki armii wraz z juz obliczonymi wartosciami ataku i zycia
@@ -147,20 +161,40 @@ class CalculatorService
         return $this->monsters->sum('zycie');
     }
 
-    private function armiesAttack()
+    private function countGroupCanAttack(collection $data)
+    {
+        if ($data->count) {
+            # code...
+        }
+    }
+
+    private function getAtakingUnitFromArmies()
     {
         $first = true;
-
-//        dodac metode przechwytujaca jednostke ktora atakuje i dac ja do metody ktora wybierze jednostke do zaatakowania
-//          zastanowic sie w jaki sposob momzna uzyskac porzadany efekt
-        $this->armies->transform(function ($item, $key) use (&$first) {
-            if ($first == true && $item['render']['action']) {
+        $armyUnit = [];
+        $this->armies->transform(function ($item, $key) use (&$first, &$armyUnit) {
+            if ($first == true && $item['render']['action'] == true) {
                 $item['render']['action'] = false;
                 $first = false;
+                $armyUnit = $item;
                 return $item;
             }
+            // dd($item);
             return $item;
         });
+        return $armyUnit;
+    }
 
+    private function grabArmyData($army)
+    {
+        // dd($army);
+        return [
+            'lvl' => $army['render']['lvl'],
+            'name' => $army['render']['nazwa'],
+            'count_unit' => $army['ilosc'],
+            'lost_trops' => 0,
+            'death' => false,
+            'action' => true
+        ];
     }
 }

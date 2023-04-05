@@ -67,6 +67,8 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 				$licznik_ataku_armia+=$keys['odbyty_atak'];
 			}
 			if($licznik_ataku_armia > 0){
+                //ze stosu mam wziasc 1wsza jednostke ktora nie dokonala jescze w danej turze ataku
+                //stos ma byc posegregowany od najwiekszego do najmniejszego ataku
 				while(($licznik_armia < count($armia_walka)) && ($atak == 0)){
 					if($armia_walka[$licznik_armia]['odbyty_atak'] == 1){
 						$atak = $armia_walka[$licznik_armia]['atak_sila'];
@@ -79,6 +81,8 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 						$each_row_to_send->stratyLeft = 0;
 						$each_row_to_send->deathLeft = false;
 						foreach($potwory_walka as $p_licznik => $p_klucz)  //wszystkie potwory
+                        //ta czesc kodu sprawdza najwiekszy bonus jaki posiada armia(atakujaca jednostka) do potworkow i wybierany najwiekszy bonus z
+                        //uwzglednieniem ze nie sciagne go na hita. atak z bonusem < niz cale hp potworka
 						{
 							$sprawdzany_bonus = 0;
 							for($j = 1; $j <= 3; $j++)
@@ -100,7 +104,7 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 									}
 								}
 							}
-							if(($bonsu < $sprawdzany_bonus)&&($atak < $p_klucz['zycie_walka']))
+							if(($bonsu < $sprawdzany_bonus)&&($atak < $p_klucz['zycie_walka'])) //sprawdzany potworrek czy armia ma na niego bonus i czy atak armii nie jest wiekszy od hp potworka
 							{
 								$bonsu = $sprawdzany_bonus;
 								$atakowana_jednostka = $p_licznik;
@@ -117,6 +121,7 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 
 							$potwory_walka[$atakowana_jednostka]['zycie_walka'] -= $atak_z_bonem;
 							$armia_walka[$licznik_armia]['odbyty_atak'] = 0;
+                            //sprawdzenie czy jednostka padla
 							if($potwory_walka[$atakowana_jednostka]['zycie_walka'] <= 0)
 							{
 								$each_row_to_send->damage = $obr2_potwory;
@@ -126,6 +131,7 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 								unset($potwory_walka[$atakowana_jednostka]);
 							}
 							else
+                            //jezeli cos zostalo przeliczenie pozostalych
 							{
 								$each_row_to_send->damage = $atak_z_bonem;
 								$each_row_to_send->deathRight = false;
@@ -138,11 +144,13 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 						//-----ATAK BEZ BONUSU----
 						else
 						{
+                            //skoro atak bez bonusu katapulta ma zmniejszone obrazenia
 							$pulta = 1;
 								if(($armia_walka[$licznik_armia]['typ'] == 'Machina') || ($armia_walka[$licznik_armia]['typ1'] == 'Machina') || ($armia_walka[$licznik_armia]['typ2'] == 'Machina') || ($armia_walka[$licznik_armia]['typ3'] == 'Machina'))
 								{
 									$pulta = 20;
 								}
+                            //atak bez bonuzu z uwzglednieniem zmniejszonych obrazen katapulty
 							$atak_bez_bona = $armia_walka[$licznik_armia]['ile_jednostek'] * ((($armia_walka[$licznik_armia]['sila']/100)/$pulta) * (100 + $armia_walka[$licznik_armia]['bonus_ataku']));
 							$max_atak_potwora = 0; //sprawdz atak
 							$max_index_potwora = 0; //ostatnie wychodzace id
@@ -152,11 +160,15 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 							foreach($potwory_walka as $keys => $values)
 							{
 								$atak_podstawa = $values['ile_jednostek'] * $values['sila'];
+                                //szukanie potworka z jak najwiekszym atakiem i zebym o nie zgarnol na hita
+                                //nie jednostrzalowiec z najwieksza iloscia ataku
 								if(($atak_bez_bona < $values['zycie_walka']) && ($max_atak_potwora < $atak_podstawa))
 								{
 									$max_atak_potwora = $atak_podstawa;
 									$id_ap = $keys;
 								}
+                                //szukanie potworka ktorago zgarne na hita ale jego hp bedzie najwieksze z mozliwych
+                                //jednostrzalowiec z najwieksza liczba hp
 								elseif(($atak_bez_bona > $values['zycie_walka']) && ($najwieksze_hp < $values['zycie_walka']))
 								{
 									$najwieksze_hp = $values['zycie_walka'];
@@ -168,6 +180,7 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 								$max_index_potwora = $id_ap;
 							}
 							else
+                            //prawdopodobnie id hp = 0 jest wazne poniewaz iteracja tablicy jest liczona od zera musze sie upewniec!!
 							{
 								$max_index_potwora = $id_hp;
 							}
@@ -185,6 +198,7 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 											$typ_armia = "typ".$k;
 											if($potwory_walka[$i][$bonus_komu] == $armia_walka[$licznik_armia][$typ_armia])
 											{
+                                                //liczenie z bonusem ile bedzie mial potworek ataku do obecnie atakujacej armii
 												$atak1 = $potwory_walka[$i]['ile_jednostek'] * (($potwory_walka[$i]['sila']/100)*(100 + $potwory_walka[$i][$bonus_ile]));
 												if(($max_atak_potwora < $atak1) && ($potwory_walka[$i]['zycie_walka'] > $atak_bez_bona))
 												{
@@ -334,6 +348,7 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 						{
 							$max_atak_potwora = 0;
 							$max_index_potwora = 0;
+                            //wybrana armia z najwieksza liczba ataku
 							foreach($armia_walka as $keys => $values)
 							{
 								$pulta = 1;
@@ -348,6 +363,7 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 									$max_index_potwora = $keys;
 								}
 							}
+                            //jest spawdzany atak armii z bonusem i wybrany najwiekszy atak bedzie zaatakowany przez obecnie atakujacego potworka
 							$licznik_potw = count($armia_walka);
 							for($i = 0; $i < $licznik_potw; $i++)
 							{
