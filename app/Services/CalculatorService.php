@@ -36,12 +36,9 @@ class CalculatorService
                     continue;
                 }
                 $atakingUnit = $this->getAtakingUnitFromArmies();
-                $atakingUnit = $this->getAtakingUnitFromArmies();
-                $atakingUnit = $this->getAtakingUnitFromArmies();
-                $atakingUnit = $this->getAtakingUnitFromArmies();
-                $atakingUnit = $this->getAtakingUnitFromArmies();
-                dd($atakingUnit);
-                // $prepareRaportData['army'] = $this->grabArmyData($atakingUnit);
+                $prepareRaportData['army'] = $this->grabArmyData($atakingUnit);
+                // dd($atakingUnit);
+                $this->serchUnitToAtackByBonusAtack($this->monsters, $atakingUnit);
                 // $this->armiesAttack($atakingUnit);
 
                 //atakuje armia
@@ -196,5 +193,33 @@ class CalculatorService
             'death' => false,
             'action' => true
         ];
+    }
+
+    private function serchUnitToAtackByBonusAtack($unitsToAtack, $atakingUnit)
+    {
+        $testingObject = 'first';
+        $testingObjectFinding1 = 'first';
+        $testingObjectFinding2 = 'second';
+        $testingObjectFinding3 = 'third';
+        $testingObjectCallback1 = 'it is first';
+        $testingObjectCallback2 = 'it is second';
+        $testingObjectCallback3 = 'it is third';
+
+        $result = match($testingObject){
+            $testingObjectFinding1 => $testingObjectCallback1,
+            $testingObjectFinding2 => $testingObjectCallback2,
+            $testingObjectFinding3 => $testingObjectCallback3,
+            default => 'no result',
+        };
+
+        dd($result);
+        $bigestBonusToAtack = 0;
+        foreach ($unitsToAtack as $key => $unit) {
+            $bigestBonusToAtack += match($atakingUnit['render']['atak'][1]['nazwa']){
+                $unit => 1
+            };
+            //3 types and 3 bonuses
+        }
+        return $bigestBonusToAtack;
     }
 }
