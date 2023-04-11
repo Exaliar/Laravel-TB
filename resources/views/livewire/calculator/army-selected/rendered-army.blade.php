@@ -103,7 +103,7 @@
                         Życie:
                     </span>
                     <span class="text-md block w-1/2">
-                        {{ number_format($army['render']['zycie'], 2, '.', ' ') }}
+                        {{ number_format($army['render']['zycie_all'], 2, '.', ' ') }}
                     </span>
                 </div>
 

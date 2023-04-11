@@ -67,7 +67,7 @@
                     Życie:
                 </span>
                 <span class="text-md block w-1/2">
-                    {{ number_format($monsterDetal['zycie'], 2, '.', ' ') }}
+                    {{ number_format($monsterDetal['zycie_all'], 2, '.', ' ') }}
                 </span>
             </div>
         @empty

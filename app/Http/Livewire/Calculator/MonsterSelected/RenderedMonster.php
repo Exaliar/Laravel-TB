@@ -113,7 +113,8 @@ class RenderedMonster extends Component
                     'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $relacja->third_bonus + $bonusAP))
                 ]
                 ],
-            'zycie' => $ilosc * (($relacja->health / 100) * (100 + $bonusHP)),
+                'zycie_each' => $relacja->health,
+            'zycie_all' => $ilosc * (($relacja->health / 100) * (100 + $bonusHP)),
             'action' => true
         ];
 

@@ -10,6 +10,7 @@ class UserPanel extends Component
     public $firstAtak = true;
     public $bonusAP = 25;
     public $bonusHP = 25;
+    public $blads;
 
     public function render()
     {
@@ -61,7 +62,14 @@ class UserPanel extends Component
     public function fight()
     {
         $calculator = new CalculatorService;
-        $calculator->calculate();
+        $data = $calculator->calculate();
+        if (!empty($data['errors'])) {
+            $this->blads = $data['errors'];
+            // $this->refresh();
+        } else {
+            $this->blads = [];
+        }
+        // dd($data);
         //stworzenie kopii z sessji jezeli istenija w sessji
         //sprawdzenie czy dane wejsciowe istenieja
         //tablica potworow

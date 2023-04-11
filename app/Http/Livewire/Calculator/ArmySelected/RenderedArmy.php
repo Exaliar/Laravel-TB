@@ -117,7 +117,11 @@ class RenderedArmy extends Component
     {
         $this->armySelected->forget($id);
         $this->armySelected = $this->armySelected->values();
-        session(['armySelected' => $this->armySelected]);
+        if ($this->armySelected->isEmpty()) {
+            session()->forget('armySelected');
+        } else {
+            session(['armySelected' => $this->armySelected]);
+        }
     }
 
     public function updatedArmySelected($value, $id)
@@ -133,7 +137,13 @@ class RenderedArmy extends Component
             $data[$keys[0]][$keys[1]] = round(abs(floatval($value)), 1);
         }
 
-        $data[$keys[0]]['render'] = $this->prepreData($army, $data[$keys[0]]['ilosc'], 1, $data[$keys[0]]['bonusAP'], $data[$keys[0]]['bonusHP'])->toArray();
+        $data[$keys[0]]['render'] = $this->prepreData(
+            relacja : $army,
+            ilosc : $data[$keys[0]]['ilosc'],
+            multiple : 1,
+            bonusAP : $data[$keys[0]]['bonusAP'],
+            bonusHP : $data[$keys[0]]['bonusHP'])
+            ->toArray();
 
         $this->armySelected = collect($data);
         session(['armySelected' => $this->armySelected]);
@@ -142,7 +152,11 @@ class RenderedArmy extends Component
 
     private function prepreData($relacja, int $ilosc = 1,int $multiple = 1,float $bonusAP = 0,float $bonusHP = 0)
     {
+        // dd($relacja);
         return collect([
+            'id' => $relacja->id,
+            'bonusAP' => $bonusAP,
+            'bonusHP' => $bonusHP,
             'nazwa' => $relacja->name,
             'lvl' => $relacja->lvl,
             'typ' => [
@@ -152,6 +166,7 @@ class RenderedArmy extends Component
             ],
             'mnoznik' => $multiple,
             'ilosc' => $ilosc,
+            'atak_each' => $relacja->strength,
             'atak' => [
                 [
                     'nazwa' => 'Podstawa',
@@ -175,7 +190,8 @@ class RenderedArmy extends Component
                     'total_atak' => $ilosc * (($relacja->strength / 100) * (100 + $relacja->third_bonus + $bonusAP))
                 ]
             ],
-            'zycie' => $ilosc * (($relacja->health / 100) * (100 + $bonusHP)),
+            'zycie_each' => $relacja->health,
+            'zycie_all' => $ilosc * (($relacja->health / 100) * (100 + $bonusHP)),
             'action' => true
         ]);
     }

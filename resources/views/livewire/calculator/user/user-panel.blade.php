@@ -1,5 +1,13 @@
 <div>
     <section class="flex flex-col text-tb-second">
+
+        @if (!empty($blads))
+            @foreach ($blads as $blad)
+                <div class="w-ful text-center text-red-500">{{ $blad }}</div>
+                {{-- {{ 'test' }} --}}
+            @endforeach
+        @endif
+
         <div class="flex w-full flex-row py-2 pr-4">
             <span class="block w-1/3 px-4">First atak:</span>
             <div class="inline-flex select-none divide-x rounded-lg border border-gray-200 bg-tb-second text-gray-900">
