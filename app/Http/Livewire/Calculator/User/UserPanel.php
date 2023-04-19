@@ -63,6 +63,7 @@ class UserPanel extends Component
     {
         $calculator = new CalculatorService;
         $data = $calculator->calculate();
+        dd($data);
         if (!empty($data['errors'])) {
             $this->blads = $data['errors'];
             // $this->refresh();

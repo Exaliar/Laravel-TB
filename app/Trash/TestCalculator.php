@@ -212,9 +212,11 @@ function tb_raport($potwory_walka = null, $armia_walka = null, $kolejka = 0){
 							}
 							$each_row_to_send->lvlRight = $potwory_walka[$max_index_potwora]['lvl'];
 							$each_row_to_send->nazwaRight = $potwory_walka[$max_index_potwora]['nazwa'];
+
 							$obr_potwory = $potwory_walka[$max_index_potwora]['zycie_walka'];
+
 							$potwory_walka[$max_index_potwora]['zycie_walka'] -= $atak_bez_bona;
-							$armia_walka[$licznik_armia]['odbyty_atak'] = 0;
+							$armia_walka[$licznik_armia]['odbyty_atak'] = 0; ///!!!!!
 							if($potwory_walka[$max_index_potwora]['zycie_walka'] <= 0)
 							{
 								$each_row_to_send->damage = $obr_potwory;

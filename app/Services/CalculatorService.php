@@ -17,6 +17,8 @@ class CalculatorService
 
     public function calculate()
     {
+        // dd(xdebug_info());
+        // dd(phpinfo());
         $this->setArmyies();
         $this->setMonsters();
         $this->setFirstAtak();
@@ -46,19 +48,26 @@ class CalculatorService
                 }
 
                 $prepareRaportData['action'] = true; //true - atak in right, false - atak in left - arrow to display derection attack in viue.
-                $this->sortByAtakArmies();
-                $attacker = $this->getAtakingUnit($this->armies);
-                $prepareRaportData['army'] = $this->grabAttackingUnitData($attacker);
 
-                $unitToAtack = $this->serchUnitToAtackByBonusAtack(attackedUnits: $this->monsters, attackingUnit: $attacker);
+                // $this->sortByAtakArmies();
+                // $this->sortByAtakMonsters();
+
+                $armyAttackingUnit = $this->getAtakingUnit($this->armies);
+                $prepareRaportData['army'] = $this->grabAttackingUnitData($armyAttackingUnit);
+                // $mosnters = $this->monsters->values();
+                // $this->monsters = collect($mosnters);
+
+                $monsterUnitToAtack = $this->serchUnitToAtackByBonusAtack(attackedUnits: $this->monsters, attackingUnit: $armyAttackingUnit);
+                // dd($monsterUnitToAtack);
                 //-----ATAK WITH BONUS-----
-                if ($unitToAtack !== null) {
-                    $prepareRaportData['monster'] = $this->doAttackWithBonusToMonsters(attackedUnitId: $unitToAtack['id'], attackingUnit: $attacker, biggestBonus: $unitToAtack['bonus']);
+                if ($monsterUnitToAtack !== null) {
+                    $prepareRaportData['monster'] = $this->doAttackWithBonusToMonsters(attackedUnitId: $monsterUnitToAtack['id'], attackingUnit: $armyAttackingUnit, biggestBonus: $monsterUnitToAtack['bonus']);
                 } else {
-                //-----ATAK WITHOUT BONUS-----
-                    $machineDamage = $this->checkUnitIsSiegeEngine($attacker);
-                    $unitToAtack = $this->serchUnitWithBiggestAttackOrHpOrBonuss(attackingUnit: $attacker, machineDamage: $machineDamage, attackedUnits: $this->monsters);
-                    $prepareRaportData['monster'] = $this->doAttackWithoutBonusToMonster(attackedUnitId: $unitToAtack, attackingUnit: $attacker, machineDamage: $machineDamage);
+                    //-----ATAK WITHOUT BONUS-----
+                    $machineDamage = $this->checkUnitIsSiegeEngine($armyAttackingUnit);
+                    $monsterUnitToAtack = $this->serchUnitWithBiggestAttackOrHpOrBonuss(attackingUnit: $armyAttackingUnit, machineDamage: $machineDamage, attackedUnits: $this->monsters);
+                    $prepareRaportData['monster'] = $this->doAttackWithoutBonusToMonster(attackedUnitId: $monsterUnitToAtack, attackingUnit: $armyAttackingUnit, machineDamage: $machineDamage);
+                    // $this->monsters->values();
                 }
             } else {
                 //MONSTER ATTACK
@@ -68,19 +77,24 @@ class CalculatorService
                     continue;
                 }
                 $prepareRaportData['action'] = false; //true - atak in right, false - atak in left - arrow to display derection attack in viue.
-                $this->sortByAtakMonsters();
-                $attacker = $this->getAtakingUnit($this->monsters);
-                $prepareRaportData['monster'] = $this->grabAttackingUnitData($attacker);
+                // $this->sortByAtakMonsters();
+                // $this->sortByAtakArmies();
+                $monsterAttackingUnit = $this->getAtakingUnit($this->monsters);
+                $prepareRaportData['monster'] = $this->grabAttackingUnitData($monsterAttackingUnit);
+                // $armies = $this->armies->values();
+                // $this->armies = collect($armies);
 
-                $unitToAtack = $this->serchUnitToAtackByBonusAtack(attackedUnits: $this->armies, attackingUnit: $attacker);
+                $armyUnitToAtack = $this->serchUnitToAtackByBonusAtack(attackedUnits: $this->armies, attackingUnit: $monsterAttackingUnit);
                  //-----ATAK WITH BONUS-----
-                 if ($unitToAtack !== null) {
-                    $prepareRaportData['monster'] = $this->doAttackWithBonusToMonsters(attackedUnitId: $unitToAtack['id'], attackingUnit: $attacker, biggestBonus: $unitToAtack['bonus']);
+                if ($armyUnitToAtack !== null) {
+                    $prepareRaportData['army'] = $this->doAttackWithBonusToArmies(attackedUnitId: $armyUnitToAtack['id'], attackingUnit: $monsterAttackingUnit, biggestBonus: $armyUnitToAtack['bonus']);
                 } else {
-                //-----ATAK WITHOUT BONUS-----
-                    $machineDamage = $this->checkUnitIsSiegeEngine($attacker);
-                    $unitToAtack = $this->serchUnitWithBiggestAttackOrHpOrBonuss(attackingUnit: $attacker, machineDamage: $machineDamage, attackedUnits: $this->armies);
-                    $prepareRaportData['monster'] = $this->doAttackWithoutBonusToMonster(attackedUnitId: $unitToAtack, attackingUnit: $attacker, machineDamage: $machineDamage);
+                    //-----ATAK WITHOUT BONUS-----
+                    // $this->armies->values();
+                    $machineDamage = $this->checkUnitIsSiegeEngine($monsterAttackingUnit);
+                    $armyUnitToAtack = $this->serchUnitWithBiggestAttackOrHpOrBonuss(attackingUnit: $monsterAttackingUnit, machineDamage: $machineDamage, attackedUnits: $this->armies);
+                    // dd($armyUnitToAtack);
+                    $prepareRaportData['army'] = $this->doAttackWithoutBonusToArmies(attackedUnitId: $armyUnitToAtack, attackingUnit: $monsterAttackingUnit, machineDamage: $machineDamage);
                 }
             }
 
@@ -91,9 +105,9 @@ class CalculatorService
                 $this->resetAtakingTurn($this->armies);
             }
             $this->raport[] = $prepareRaportData;
-            dump($this->armies);
-            dump($this->monsters);
-            dump($this->raport);
+            // dump($this->armies);
+            // dump($this->monsters);
+            dump($prepareRaportData);
         }
         //zalozenie w sesji powinny znajdowac sie 3 zmienne
         //session armia = zawierajaca wszystkie wprowadzone przez urzytkownika jednostki armii wraz z juz obliczonymi wartosciami ataku i zycia
@@ -194,20 +208,23 @@ class CalculatorService
         }
     }
 
-    private function getAtakingUnit($units)
+    private function getAtakingUnit(collection $attackingUnits) : array
     {
+        // dump($this->armies);
         $first = true;
-        $armyUnit = [];
-        $units->transform(function ($item, $key) use (&$first, &$armyUnit) {
-            if ($first == true && $item['action'] == true) {
-                $item['action'] = false;
+        $attackingUnit = [];
+        $attackingUnits->transform(function ($unit, $key) use (&$first, &$attackingUnit) {
+            if ($first == true && $unit['action'] == true) {
+                $unit['action'] = false;
                 $first = false;
-                $armyUnit = $item;
-                return $item;
+                $attackingUnit = $unit;
+                return $unit;
             }
-            return $item;
+            return $unit;
         });
-        return $armyUnit;
+        // dump($attackingUnit);
+        // dd($this->armies);
+        return $attackingUnit;
     }
 
     private function grabAttackingUnitData($attackingUnit)
@@ -221,16 +238,37 @@ class CalculatorService
         ];
     }
 
-    private function serchUnitToAtackByBonusAtack($attackedUnits, $attackingUnit): ?array
+    private function serchUnitToAtackByBonusAtack(collection $attackedUnits, array $attackingUnit): ?array
     {
-        // dump($attackedUnits);
+        // dd($attackedUnits);
         // dump($attackingUnit);
 
+        // $attackedUnits->values();
         $biggestBonus = 0;
         $unitToAttackByBiggestBonus = null;
 
+        $testiteration = 0;
         foreach ($attackedUnits as $key => $attackedUnit) {
-
+            // dd($attackingUnit);
+            if ($attackedUnit == null) {
+                continue;
+            }
+            dump('Iteracja ' . $testiteration);
+            $testiteration++;
+            if (isset($attackedUnit['zycie_all'])) {
+                dump('Atakowana jednostka zycie ');
+                dump($attackedUnit, $attackedUnits);
+            } else {
+                dump('Atakowana jednostka zycie ');
+                dd($attackedUnit ?? null, $attackedUnits);
+            }
+            if (isset($attackingUnit['atak'][0]['total_atak'])) {
+                dump('Atakujaca jednostka atak ');
+                dump($attackingUnit);
+            } else {
+                dump('Atakujaca jednostka atak ');
+                dd($attackingUnit ?? null);
+            }
             if ($attackedUnit['zycie_all'] < $attackingUnit['atak'][0]['total_atak']) { // podlega testom
                 continue;
             }
@@ -267,6 +305,10 @@ class CalculatorService
 
     private function doAttackWithBonusToMonsters($attackedUnitId, $attackingUnit, $biggestBonus = 0): array
     {
+        // if (!$this->monsters[$attackedUnitId]['lvl']) {
+        //     dd($this->monsters[$attackedUnitId]['lvl']);
+        // }
+        // dump($this->monsters[$attackedUnitId]);
         $prepare = [
             'lvl' => $this->monsters[$attackedUnitId]['lvl'],
             'name' => $this->monsters[$attackedUnitId]['nazwa'],
@@ -275,9 +317,53 @@ class CalculatorService
             // 'death' => false
         ];
 
-        $atakWithBonus = $attackingUnit['ilosc'] * (($attackingUnit['atak_each'] / 100) * (100 + ($attackingUnit['bonusAP'] ?? 0) + $biggestBonus));
+        $atakWithBonus = $attackingUnit['ilosc'] * (($attackingUnit['atak_each'] / 100) * (100 + $biggestBonus));
 
-        $this->monsters->transform(function (array $attackedUnit, int $key) use ($attackedUnitId, $atakWithBonus, &$prepare) {
+        $dataAfterFighht = $this->monsters->map(function (array $attackedUnit, int $key) use ($attackedUnitId, $atakWithBonus, &$prepare) {
+            if ($key == $attackedUnitId) {
+                // dd($attackedUnit);
+                $healthAttackedUnit = $attackedUnit['zycie_all'];
+                $attackedUnit['zycie_all'] -= $atakWithBonus;
+
+                if ($attackedUnit['zycie_all'] <= 0) {
+                    $prepare['damage'] = $healthAttackedUnit;
+                    $prepare['death'] = true;
+                    $prepare['lost_trops'] = $attackedUnit['ilosc'];
+                    unset($attackedUnit);
+                    // return;
+                } else {
+                    $prepare['damage'] = $atakWithBonus;
+                    $prepare['death'] = false;
+                    $prepare['lost_trops'] = floor($atakWithBonus / $attackedUnit['zycie_each']);
+                    $attackedUnit['ilosc'] = ceil($attackedUnit['zycie_all'] / $attackedUnit['zycie_each']);
+                    $attackedUnit['atak'][0]['total_atak'] = $attackedUnit['ilosc'] * $attackedUnit['atak_each'];
+                }
+            }
+            return $attackedUnit ?? false;
+        })->filter();
+        $this->monsters = $dataAfterFighht;
+        $this->sortByAtakMonsters();
+        // dd($prepare, $attackingUnit, $attackedUnitId, $this->monsters);
+        return $prepare;
+    }
+
+    private function doAttackWithBonusToArmies($attackedUnitId, $attackingUnit, $biggestBonus = 0): array
+    {
+        // if (!$this->monsters[$attackedUnitId]['lvl']) {
+        //     dd($this->monsters[$attackedUnitId]['lvl']);
+        // }
+        // dump($this->monsters[$attackedUnitId]);
+        $prepare = [
+            'lvl' => $this->armies[$attackedUnitId]['lvl'],
+            'name' => $this->armies[$attackedUnitId]['nazwa'],
+            'count_unit' => $this->armies[$attackedUnitId]['ilosc'],
+            // 'lost_trops' => 0,
+            // 'death' => false
+        ];
+
+        $atakWithBonus = $attackingUnit['ilosc'] * (($attackingUnit['atak_each'] / 100) * (100 + $biggestBonus));
+
+        $dataAfterFighht = $this->armies->map(function (array $attackedUnit, int $key) use ($attackedUnitId, $atakWithBonus, &$prepare) {
             if ($key == $attackedUnitId) {
                 // dd($attackedUnit);
                 $healthAttackedUnit = $attackedUnit['zycie_all'];
@@ -296,8 +382,10 @@ class CalculatorService
                     $attackedUnit['atak'][0]['total_atak'] = $attackedUnit['ilosc'] * $attackedUnit['atak_each'];
                 }
             }
-            return $attackedUnit;
-        });
+            return $attackedUnit ?? false;
+        })->filter();
+        $this->armies = $dataAfterFighht;
+        $this->sortByAtakArmies();
         // dd($prepare, $attackingUnit, $attackedUnitId, $this->monsters);
         return $prepare;
     }
@@ -314,7 +402,7 @@ class CalculatorService
 
     private function serchUnitWithBiggestAttackOrHpOrBonuss($attackingUnit, $machineDamage, $attackedUnits)
     {
-        $attackWithoutBonus = $attackingUnit['ilosc'] * ((($attackingUnit['atak_each']/100)/$machineDamage) * (100 + $attackingUnit['bonusAP'] ?? 0));
+        $attackWithoutBonus = $attackingUnit['ilosc'] * ((($attackingUnit['atak_each']/100)/$machineDamage) * (100 + ($attackingUnit['bonusAP'] ?? 0)));
         $biggestAttack = 0;
         $biggestHp = 0;
         $biggestAttackId = null;
@@ -347,7 +435,7 @@ class CalculatorService
                         $attackingUnit['atak'][3]['nazwa'] => $attackingUnit['atak'][3]['bonus'],
                         default => 0
                     };
-                    $attack = $attackedUnit['ilosc'] * (($attackedUnit['atak_each']/100) * (100 + $bonus + $attackingUnit['bonusAP'] ?? 0));
+                    $attack = $attackedUnit['ilosc'] * (($attackedUnit['atak_each']/100) * (100 + $bonus + ($attackingUnit['bonusAP'] ?? 0)));
                     $biggestBonusAtakId = ($biggestAttack < $attack ? $key : null);
                 }
             }
@@ -370,11 +458,11 @@ class CalculatorService
 
         $atakWithoutBonus = $attackingUnit['ilosc'] * ((($attackingUnit['atak_each'] / 100)/$machineDamage) * (100 + $attackingUnit['bonusAP']));
 
-        $this->monsters->transform(function (array $attackedUnit, int $key) use ($attackedUnitId, $atakWithoutBonus, &$prepare) {
+        // dump($attackedUnitId, $attackingUnit, $machineDamage);
+        $dataAfterFighht = $this->monsters->map(function (array $attackedUnit, int $key) use ($attackedUnitId, $atakWithoutBonus, &$prepare) {
             if ($key == $attackedUnitId) {
                 // dd($attackedUnit);
                 $healthAttackedUnit = $attackedUnit['zycie_all'];
-
                 $attackedUnit['zycie_all'] -= $atakWithoutBonus;
 
                 if ($attackedUnit['zycie_all'] <= 0) {
@@ -390,9 +478,51 @@ class CalculatorService
                     $attackedUnit['atak'][0]['total_atak'] = $attackedUnit['ilosc'] * $attackedUnit['atak_each'];
                 }
             }
-            return $attackedUnit;
-        });
-        // dd($prepare, $attackingUnit, $attackedUnitId, $this->monsters);
+            return $attackedUnit ?? false;
+        })->filter();
+        $this->monsters = $dataAfterFighht;
+        $this->sortByAtakMonsters();
+        // dd($prepare, $this->armies, $this->monsters);
+        return $prepare;
+    }
+
+    private function doAttackWithoutBonusToArmies($attackedUnitId, $attackingUnit, $machineDamage)
+    {
+        $prepare = [
+            'lvl' => $this->armies[$attackedUnitId]['lvl'],
+            'name' => $this->armies[$attackedUnitId]['nazwa'],
+            'count_unit' => $this->armies[$attackedUnitId]['ilosc'],
+            // 'lost_trops' => 0,
+            // 'death' => false
+        ];
+
+        $atakWithoutBonus = $attackingUnit['ilosc'] * ($attackingUnit['atak_each'] / $machineDamage);
+
+        // dump($attackedUnitId, $attackingUnit, $machineDamage);
+        $dataAfterFighht = $this->armies->map(function (array $attackedUnit, int $key) use ($attackedUnitId, $atakWithoutBonus, &$prepare) {
+            if ($key == $attackedUnitId) {
+                // dd($attackedUnit);
+                $healthAttackedUnit = $attackedUnit['zycie_all'];
+                $attackedUnit['zycie_all'] -= $atakWithoutBonus;
+
+                if ($attackedUnit['zycie_all'] <= 0) {
+                    $prepare['damage'] = $healthAttackedUnit;
+                    $prepare['death'] = true;
+                    $prepare['lost_trops'] = $attackedUnit['ilosc'];
+                    unset($attackedUnit);
+                } else {
+                    $prepare['damage'] = $atakWithoutBonus;
+                    $prepare['death'] = false;
+                    $prepare['lost_trops'] = floor($atakWithoutBonus / $attackedUnit['zycie_each']);
+                    $attackedUnit['ilosc'] = ceil($attackedUnit['zycie_all'] / $attackedUnit['zycie_each']);
+                    $attackedUnit['atak'][0]['total_atak'] = $attackedUnit['ilosc'] * $attackedUnit['atak_each'];
+                }
+            }
+            return $attackedUnit ?? false;
+        })->filter();
+        $this->armies = $dataAfterFighht;
+        $this->sortByAtakArmies();
+        // dd($prepare, $this->armies, $this->monsters);
         return $prepare;
     }
 
