@@ -7,11 +7,11 @@ class MenuTypesConfig
     const GUARDSMAN = 'guardsman';
     const SPECIALIST = 'specialist';
     const ENGINEER_CORP = 'engineer_corp';
-    // const SIEGE_ENGINE = 'siege_engine';
     const DRAGON = 'dragon';
     const ELEMENTAL = 'elemental';
     const GIANT = 'giant';
     const BEAST = 'beast';
+    // const SIEGE_ENGINE = 'siege_engine';
     const AUTHORITY = 'authority';
 
     const TYPES = [

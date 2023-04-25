@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Calculator\Monsters;
 
-// use App\Config\MonstersSquadTypeConfig;
-// use App\Config\MonstersTypeConfig;
+use App\Config\MonstersSquadTypeConfig;
+use App\Config\MonstersTypeConfig;
 use App\Models\MonsterSquad;
 use Livewire\Component;
 
@@ -38,6 +38,9 @@ class RenderedList extends Component
         if (session()->has('monsterSelectedID')) {
             $this->selected = session('monsterSelectedID');
         }
+
+        $this->typesSelected = MonstersTypeConfig::TYPES;
+        $this->squadsSelected = MonstersSquadTypeConfig::TYPES;
     }
 
     public function render()
@@ -54,13 +57,21 @@ class RenderedList extends Component
 
     public function squadsSelected($value)
     {
-        $this->squadsSelected = $value;
+        if (empty($value)) {
+            $this->squadsSelected = MonstersSquadTypeConfig::TYPES;
+        } else {
+            $this->squadsSelected = $value;
+        }
         $this->filterSquadMonster();
     }
 
     public function typesSelected($value)
     {
-        $this->typesSelected = $value;
+        if (empty($value)) {
+            $this->typesSelected = MonstersTypeConfig::TYPES;
+        } else {
+            $this->typesSelected = $value;
+        }
         $this->filterSquadMonster();
     }
 
