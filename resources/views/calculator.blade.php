@@ -26,5 +26,9 @@
         <x-calculator.section-title>Panel urzytkownika</x-calculator.section-title>
 
         <x-calculator.user-section />
+
+        <x-calculator.section-title>Raport</x-calculator.section-title>
+
+        <x-calculator.raport />
     </div>
 </x-app-layout>
