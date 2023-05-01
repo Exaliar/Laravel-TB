@@ -63,13 +63,14 @@ class UserPanel extends Component
     {
         $calculator = new CalculatorService;
         $data = $calculator->calculate();
-        dd($data);
-        if (!empty($data['errors'])) {
-            $this->blads = $data['errors'];
-            // $this->refresh();
-        } else {
-            $this->blads = [];
-        }
+        $this->emit('calculatorRender', $data);
+        // dd($data);
+        // if (!empty($data['errors'])) {
+        //     $this->blads = $data['errors'];
+        //     // $this->refresh();
+        // } else {
+        //     $this->blads = [];
+        // }
         // dd($data);
         //stworzenie kopii z sessji jezeli istenija w sessji
         //sprawdzenie czy dane wejsciowe istenieja
