@@ -10,7 +10,6 @@ class UserPanel extends Component
     public $firstAtak = true;
     public $bonusAP = 25;
     public $bonusHP = 25;
-    public $blads;
 
     public function render()
     {
@@ -61,7 +60,7 @@ class UserPanel extends Component
 
     public function fight()
     {
-        $calculator = new CalculatorService;
+        $calculator = new CalculatorService($this);
         $data = $calculator->calculate();
         $this->emit('calculatorRender', $data);
         // dd($data);

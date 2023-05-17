@@ -7,7 +7,8 @@ use Livewire\Component;
 class RenderRaport extends Component
 {
 
-    public $dataRender = [];
+    public $raports = [];
+    public $missingData = [];
 
     protected $listeners = [
         'calculatorRender'
@@ -20,6 +21,8 @@ class RenderRaport extends Component
 
     public function calculatorRender($data)
     {
-        $this->dataRender = $data;
+        // dd($data);
+        $this->raports = $data['raport'];
+        $this->missingData = $data['errors'];
     }
 }

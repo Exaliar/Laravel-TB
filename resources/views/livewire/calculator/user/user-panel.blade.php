@@ -4,7 +4,6 @@
         @if (!empty($blads))
             @foreach ($blads as $blad)
                 <div class="w-ful text-center text-red-500">{{ $blad }}</div>
-                {{-- {{ 'test' }} --}}
             @endforeach
         @endif
 
@@ -56,15 +55,9 @@
             <button
                 class="mr-2 rounded-lg border-r border-tb bg-blue-500 py-1.5 px-4 text-tb-second transition-all hover:bg-blue-600 active:bg-blue-600"
                 wire:click="fight">Oblicz</button>
-            <button
+            {{-- <button
                 class="rounded-lg border-l border-tb bg-green-500 py-1.5 px-4 text-tb-second transition-all hover:bg-green-600 active:bg-green-600"
-                wire:click="save">Zapisz</button>
+                wire:click="save">Zapisz</button> --}}
         </div>
-
-
-        {{-- Wybrany Squad Armii:
-        <pre>
-        {{ dump($firstAtak) }}
-        </pre> --}}
     </section>
 </div>

@@ -3,6 +3,7 @@
 
     @php
         $colors = [
+            0 => 'bg-lvl-0 text-black',
             1 => 'bg-lvl-1 text-black',
             2 => 'bg-lvl-2',
             3 => 'bg-lvl-3',

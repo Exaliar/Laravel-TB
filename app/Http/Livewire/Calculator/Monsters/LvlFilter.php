@@ -32,8 +32,6 @@ class LvlFilter extends Component
         if ($value > $this->maxLvl) {
             $this->minLvl = $this->maxLvl;
             $this->maxLvl = $value;
-        } else {
-            $this->minLvl = $value;
         }
         $this->emit('minMaxLvl', $this->minLvl, $this->maxLvl);
     }
@@ -44,8 +42,6 @@ class LvlFilter extends Component
 
         if ($value < $this->minLvl) {
             $this->maxLvl = $this->minLvl;
-            $this->minLvl = $value;
-        } else {
             $this->minLvl = $value;
         }
         $this->emit('minMaxLvl', $this->minLvl, $this->maxLvl);

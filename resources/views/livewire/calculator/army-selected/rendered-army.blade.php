@@ -1,26 +1,15 @@
 <div class="flex w-full flex-col text-tb">
-    {{-- Wybrany Squad Armii: --}}
-    {{-- <pre>
-        {{ $monsterFromDatabase ? dd($monsterFromDatabase) : 'brak' }}
-        </pre> --}}
-    {{-- <pre>
-        {{ $armySelected ? dump($armySelected) : 'brak' }}
-        </pre>
-    <br> --}}
-
     @forelse ($armySelected as $key => $army)
         <section class="w-full items-center border-b border-tb-second pt-2 text-sm text-tb-second last:border-0"
             wire:key="army-selected-{{ $key }}">
-
             <div class="flex flex-row items-center pb-2 pr-4">
                 <span class="w-1/3 px-4">#{{ $key + 1 }}</span>
                 <div class="flex items-center">
-                    <p class="mr-4">{{ $army['render']['nazwa'] }}</p>
+                    <span class="mr-4">{{ $army['render']['nazwa'] }}</span>
                     <x-buttons.lvl-army-info colorType="{{ $army['render']['lvl'] }}"
                         text="{{ $army['render']['lvl'] }}" />
                 </div>
             </div>
-
             <div class="flex flex-row items-center pb-2 pr-4">
                 <label class="w-1/3 px-4" for="ilosc{{ $key }}">Ilość</label>
                 <input
@@ -28,7 +17,6 @@
                     id="ilosc{{ $key }}" type="text" placeholder="Ilość jenostek"
                     wire:model.debounce.1s="armySelected.{{ $key }}.ilosc">
             </div>
-
             <div class="flex flex-row items-center pb-2 pr-4">
                 <label class="w-1/3 px-4" for="bonusAP{{ $key }}">Bonus Ataku</label>
                 <input
@@ -36,7 +24,6 @@
                     id="bonusAP{{ $key }}" type="text" placeholder="Bonus ataku w %"
                     wire:model.debounce.1s="armySelected.{{ $key }}.bonusAP">
             </div>
-
             <div class="flex flex-row items-center pb-2 pr-4">
                 <label class="w-1/3 px-4" for="bonusHP{{ $key }}">Bonus Życia</label>
                 <input
@@ -44,7 +31,6 @@
                     id="bonusHP{{ $key }}" type="text" placeholder="Bonus życia w %"
                     wire:model.debounce.1s="armySelected.{{ $key }}.bonusHP">
             </div>
-
             <div class="flex flex-row flex-wrap items-center pb-2 pr-4">
                 <span class="w-1/3 px-4">Akcja</span>
                 <label
@@ -58,7 +44,6 @@
                         </path>
                     </svg>
                 </label>
-
                 <button
                     class="flex items-center space-x-2 rounded-lg border border-red-700 bg-red-600 py-1.5 px-4 font-medium text-white transition-colors hover:bg-red-700 active:bg-red-800 disabled:opacity-50"
                     wire:click="removeArmyUnit({{ $key }})">
@@ -72,7 +57,6 @@
             <input class="peer/army hidden" id="army{{ $key }}" name="" type="checkbox">
             <div
                 class="odd flex max-h-0 w-full flex-1 flex-col overflow-hidden transition-all duration-500 peer-checked/army:max-h-[500px]">
-
                 <div class="flex pl-2 odd:bg-tb-second/10">
                     <span class="block w-1/2 text-sm">
                         Typ:
@@ -83,7 +67,6 @@
                         @endforeach
                     </span>
                 </div>
-
                 @foreach ($army['render']['atak'] as $atak)
                     @if ($atak['nazwa'] !== null)
                         <div class="flex pl-2 odd:bg-tb-second/10">
@@ -96,8 +79,6 @@
                         </div>
                     @endif
                 @endforeach
-
-
                 <div class="flex border-b pl-2">
                     <span class="block w-1/2 text-sm">
                         Życie:
@@ -106,11 +87,9 @@
                         {{ number_format($army['render']['zycie_all'], 2, '.', ' ') }}
                     </span>
                 </div>
-
             </div>
         </section>
     @empty
         <p class="py-2 text-center text-tb-second">BRAK</p>
     @endforelse
-
 </div>

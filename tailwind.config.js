@@ -22,6 +22,7 @@ module.exports = {
                     purple: "rgba(var(--color-base-purple), <alpha-value>)",
                 },
                 lvl: {
+                    0: "rgba(var(--color-lvl-zero), <alpha-value>)",
                     1: "rgba(var(--color-lvl-first), <alpha-value>)",
                     2: "rgba(var(--color-lvl-second), <alpha-value>)",
                     3: "rgba(var(--color-lvl-thirth), <alpha-value>)",
