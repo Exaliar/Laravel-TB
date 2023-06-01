@@ -2,7 +2,7 @@
     <section>
         @foreach ($articles as $article)
             <article
-                class="mx-auto mb-4 h-auto overflow-auto border-b border-tb-second border-opacity-50 text-tb-second">
+                class="@if (!$loop->last) border-b border-tb-second border-opacity-50 @endif mx-auto mb-4 h-auto overflow-auto text-tb-second">
                 <div class="flex">
                     <h3 class="block h-10 w-10 rounded-full bg-tb-second/10 text-center leading-10">
                         {{ $article->user->avatar() }}</h3>

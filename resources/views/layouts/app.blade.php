@@ -18,25 +18,28 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-tb">
-        @include('layouts.navigation')
+<body class="bg-tb font-sans antialiased">
+    {{-- <section class="min-h-screen "> --}}
+    @include('layouts.navigation')
 
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-tb pt-16 shadow">
-                <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
+    {{-- <!-- Page Heading -->
+    @if (isset($header))
+        <header class="bg-tb pt-16 shadow">
+            <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
+    @endif --}}
 
-        <!-- Page Content -->
-        <main>
-            {{ $slot }}
-        </main>
-    </div>
-    <!-- Livewire Script -->
+    <!-- Page Content -->
+    <main class="border-b border-tb-second p-3 pt-20">
+        {{ $slot }}
+    </main>
+
+    <!-- Page Footer -->
+    @include('layouts.footer')
+    {{-- </section> --}}
+    {{-- <!-- Livewire Script --> --}}
     @livewireScripts
 </body>
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CalculatorController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NewArticleController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::controller(NewArticleController::class)->prefix('articles')->name('articl
 });
 
 Route::get('/calculator', CalculatorController::class)->name('calculator');
+Route::post('/newsletter', ContactController::class)->name('newsletter')->middleware('throttle:contactForm');
 
 Route::get('/', function () {
     return redirect('/articles');

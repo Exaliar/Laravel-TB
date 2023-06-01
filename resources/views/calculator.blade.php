@@ -5,7 +5,7 @@
         </h1>
     </x-slot>
 
-    <div class="py-12">
+    <div>
 
         <x-calculator.section-title>przeciwnicy</x-calculator.section-title>
 

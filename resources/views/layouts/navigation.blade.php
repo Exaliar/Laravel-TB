@@ -104,31 +104,31 @@
 
     <!-- Responsive Navigation Menu -->
     <div class="fixed right-0 left-0 top-16 z-50 hidden bg-tb md:hidden" :class="{ 'block': open, 'hidden': !open }">
-        <div class="pt-2 pb-1">
+        <div>
             <x-responsive-nav-link :href="route('article.index')" :active="request()->routeIs('article.index')">
                 {{ __('Nowości') }}
             </x-responsive-nav-link>
         </div>
-        <div class="pb-1">
+        <div>
             <x-responsive-nav-link :href="route('calculator')" :active="request()->routeIs('calculator')">
                 {{ __('Kalkulator') }}
             </x-responsive-nav-link>
         </div>
-        <div class="pb-3">
+        <div>
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home-Small') }}
             </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="border-t border-tb-second md:border-none">
+        <div class="border-t border-b border-tb-second md:border-none">
             @auth
                 <div class="px-4 py-2">
                     <div class="text-base font-medium text-tb-second">{{ Auth::user()->name }}</div>
                     <div class="text-sm font-medium text-tb-second/70">{{ Auth::user()->email }}</div>
                 </div>
 
-                <div class="mt-3 space-y-1">
+                <div>
                     <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
@@ -140,7 +140,7 @@
                     </form>
                 </div>
             @else
-                <div class="mt-3 space-y-1">
+                <div>
                     <x-responsive-nav-link :href="route('login')">
                         {{ __('Log in') }}
                     </x-responsive-nav-link>

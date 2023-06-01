@@ -20,6 +20,7 @@ class NewArticleController extends Controller
     {
         $articles = NewArticle::with('user')
             ->latest()
+            ->take(2)
             ->get();
         return view('articles')->with('articles', $articles);
     }

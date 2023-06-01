@@ -6,7 +6,7 @@
     </x-slot>
 
     <div>
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="mx-auto sm:px-6 lg:px-8">
 
             @if (session()->has('success'))
                 <x-alerts.success :message="session('success')" />
@@ -18,25 +18,23 @@
             @error('floating_text')
                 {{ $message }}
             @enderror
+
+            @can('isAdmin')
+                <div class="rounded bg-tb-second/5 p-6">
+                    <x-article.create />
+                </div>
+            @endcan
+
             @if (isset($articles))
-                @can('isAdmin')
-                    <div class="rounded bg-tb-second/5 p-6">
-                        <x-article.create />
-                    </div>
-                @endcan
-                <div class="border-b border-tb-second p-6">
-                    <x-article.index :$articles />
-                </div>
+                <x-article.index :$articles />
             @endif
+
             @if (isset($article))
-                <div class="border-b border-tb-second p-6">
-                    <x-article.show :$article />
-                </div>
+                <x-article.show :$article />
             @endif
+
             @if (isset($editArticle))
-                <div class="border-b border-tb-second p-6">
-                    <x-article.edit :$editArticle />
-                </div>
+                <x-article.edit :$editArticle />
             @endif
         </div>
     </div>
